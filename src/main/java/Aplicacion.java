@@ -23,25 +23,32 @@ public class Aplicacion extends JFrame {
         setLocationRelativeTo(null);
         setLookAndFeel();
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        Font generalFont = new Font("SansSerif", Font.PLAIN, 14);
+        UIManager.put("Label.font", generalFont);
+        UIManager.put("Button.font", generalFont);
+        UIManager.put("TabbedPane.font", generalFont);
 
-        JPanel genomicPanel = createGenomicPanel();
-        JPanel numericPanel = createNumericPanel();
-        JPanel managementPanel = createManagementPanel();
-        JPanel optimizationPanel = createOptimizationPanel();
+        JTabbedPane tabbedPane = new JTabbedPane();
+        Color backgroundColor = new Color(249, 249, 249);
+        Color foregroundColor = new Color(107, 107, 107);
 
         ImageIcon genomicIcon = new ImageIcon(new ImageIcon("src/main/resources/adn.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         ImageIcon numericIcon = new ImageIcon(new ImageIcon("src/main/resources/numeros.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         ImageIcon managementIcon = new ImageIcon(new ImageIcon("src/main/resources/control.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         ImageIcon optimizationIcon = new ImageIcon(new ImageIcon("src/main/resources/optimizacion.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 
+        JPanel genomicPanel = createGenomicPanel(backgroundColor, foregroundColor);
+        JPanel numericPanel = createNumericPanel(backgroundColor, foregroundColor);
+        JPanel managementPanel = createManagementPanel(backgroundColor, foregroundColor);
+        JPanel optimizationPanel = createOptimizationPanel(backgroundColor, foregroundColor);
+
         tabbedPane.addTab("Análisis Genómico", genomicIcon, genomicPanel);
         tabbedPane.addTab("Análisis Numérico", numericIcon, numericPanel);
         tabbedPane.addTab("Gestión de Información", managementIcon, managementPanel);
         tabbedPane.addTab("Optimización de Procesos", optimizationIcon, optimizationPanel);
-
         add(tabbedPane);
     }
+
 
     private void setLookAndFeel() {
         try {
@@ -60,7 +67,7 @@ public class Aplicacion extends JFrame {
         }
     }
 
-    private JPanel createGenomicPanel() {
+    private JPanel createGenomicPanel(Color backgroundColor, Color foregroundColor) {
         JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder("Funciones Genómicas"));
         panel.setBackground(new Color(229, 255, 204));
@@ -94,7 +101,7 @@ public class Aplicacion extends JFrame {
         return panel;
     }
 
-    private JPanel createNumericPanel() {
+    private JPanel createNumericPanel(Color backgroundColor, Color foregroundColor) {
         JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder("Herramientas de Análisis Numérico"));
         panel.setBackground(new Color(229, 255, 204));
@@ -148,7 +155,7 @@ public class Aplicacion extends JFrame {
         return panel;
     }
 
-    private JPanel createManagementPanel() {
+    private JPanel createManagementPanel(Color backgroundColor, Color foregroundColor) {
         JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder("Gestión de Información Científica"));
         panel.setBackground(new Color(229, 255, 204));
@@ -194,7 +201,7 @@ public class Aplicacion extends JFrame {
         return panel;
     }
 
-    private JPanel createOptimizationPanel() {
+    private JPanel createOptimizationPanel(Color backgroundColor, Color foregroundColor) {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createTitledBorder("Optimización de Procesos"));
         panel.setBackground(new Color(229, 255, 204));
