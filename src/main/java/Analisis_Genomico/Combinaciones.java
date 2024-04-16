@@ -9,10 +9,4 @@ public class Combinaciones {
         }
         return calcularCombinaciones(n - 1) + calcularCombinaciones(n - 2);
     }
-
-    public static void main(String[] args) {
-        Combinaciones combinaciones = new Combinaciones();
-        int n = 5;
-        System.out.println(combinaciones.calcularCombinaciones(n));
-    }
 }

@@ -36,10 +36,4 @@ public class Conteo {
         }
         return minEnd;
     }
-
-    public static void main(String[] args) {
-        Conteo conteo = new Conteo();
-        String dna = "ATGAAATAG";
-        System.out.println(conteo.contarGenes(dna));
-    }
 }
