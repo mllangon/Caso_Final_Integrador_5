@@ -1,6 +1,7 @@
 import Analisis_Genomico.Conteo;
 import Analisis_Genomico.Combinaciones;
 import Analisis_Numerico.*;
+import Gestion_Informacion_Cientifica.OrganizadorDocumentos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,6 @@ public class Aplicacion extends JFrame {
     private JButton calculateCombinationsButton;
     private JLabel combinationsResult;
 
-    // Componentes para análisis numérico
     private JTextField sumInputField;
     private JButton sumButton;
     private JLabel sumResult;
@@ -132,6 +132,24 @@ public class Aplicacion extends JFrame {
             int result = maximo.encontrarMaximo(data);
             maxResult.setText("Máximo: " + result);
         });
+
+        JTextArea documentArea = new JTextArea(10, 30);
+        JButton sortButton = new JButton("Ordenar Documento");
+        JTextArea sortedDocumentArea = new JTextArea(10, 30);
+        sortedDocumentArea.setEditable(false);
+
+        sortButton.addActionListener(e -> {
+            OrganizadorDocumentos organizador = new OrganizadorDocumentos();
+            String[] sortedLines = organizador.ordenarLineas(documentArea.getText());
+            sortedDocumentArea.setText(String.join("\n", sortedLines));
+        });
+
+        add(new JLabel("Documento Original:"));
+        add(new JScrollPane(documentArea));
+        add(sortButton);
+        add(new JLabel("Documento Ordenado:"));
+        add(new JScrollPane(sortedDocumentArea));
+
     }
 
     public static void main(String[] args) {
