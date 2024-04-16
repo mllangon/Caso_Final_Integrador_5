@@ -156,7 +156,9 @@ public class Aplicacion extends JFrame {
     }
 
     private JPanel createManagementPanel(Color backgroundColor, Color foregroundColor) {
-        JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel = new JPanel(new GridLayout(0, 1, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder("Gestión de Información Científica"));
         panel.setBackground(new Color(229, 255, 204));
 
@@ -175,31 +177,38 @@ public class Aplicacion extends JFrame {
             sortedDocumentArea.setText(String.join("\n", sortedLines));
         });
 
-        JTextArea dateListArea = new JTextArea(5, 30);
-        dateListArea.setEditable(false);
+        JLabel dateInputLabel = new JLabel("Introduce fechas en formato DD-MM-AAAA para organizar de más reciente a más antigua:");
         JTextField dateInputField = new JTextField(10);
         JButton addDateButton = new JButton("Agregar Fecha");
-        panel.add(new JLabel("Introduce fechas en formato DD-MM-AAAA para organizar:"));
-        panel.add(dateInputField);
-        panel.add(addDateButton);
-        panel.add(new JScrollPane(dateListArea));
+        JTextArea dateListArea = new JTextArea(5, 20);
+        dateListArea.setEditable(false);
+        JScrollPane dateScrollPane = new JScrollPane(dateListArea);
+
         addDateButton.addActionListener(e -> {
             try {
                 Date date = sdf.parse(dateInputField.getText());
                 dates.add(date);
-                Collections.sort(dates);
+                // Ordenar las fechas de más reciente a más antigua
+                dates.sort((date1, date2) -> date2.compareTo(date1));
                 StringBuilder sb = new StringBuilder();
                 for (Date d : dates) {
                     sb.append(sdf.format(d)).append("\n");
                 }
                 dateListArea.setText(sb.toString());
+                dateInputField.setText(""); // Limpiar el campo de texto después de agregar una fecha
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de la fecha. Usa DD-MM-AAAA.");
+                JOptionPane.showMessageDialog(null, "Error en el formato de la fecha. Usa DD-MM-AAAA.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
             }
         });
 
+        panel.add(dateInputLabel);
+        panel.add(dateInputField);
+        panel.add(addDateButton);
+        panel.add(dateScrollPane);
+
         return panel;
     }
+
 
     private JPanel createOptimizationPanel(Color backgroundColor, Color foregroundColor) {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
