@@ -1,5 +1,6 @@
 import Analisis_Genomico.Conteo;
 import Analisis_Genomico.Combinaciones;
+import Analisis_Numerico.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,86 +11,130 @@ public class Aplicacion extends JFrame {
     private JTextField dnaInputField;
     private JButton countGenesButton;
     private JLabel geneCountResult;
-    private JTextArea instructionsGenes;
-
     private JTextField numberInputField;
     private JButton calculateCombinationsButton;
     private JLabel combinationsResult;
-    private JTextArea instructionsCombinations;
+
+    // Componentes para análisis numérico
+    private JTextField sumInputField;
+    private JButton sumButton;
+    private JLabel sumResult;
+    private JTextField rangeStartField, rangeEndField;
+    private JButton listNumbersButton;
+    private JTextArea listNumbersResult;
+    private JTextField baseInputField, exponentInputField;
+    private JButton calculatePowerButton;
+    private JLabel powerResult;
+    private JTextField dataArrayField;
+    private JButton maxButton;
+    private JLabel maxResult;
 
     public Aplicacion() {
-        super("Aplicación de Análisis Genómico");
+        super("Aplicación de Análisis Genómico y Numérico");
 
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        setSize(500, 300);
+        setSize(600, 700);
+        setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Panel para el conteo de genes
-        JPanel genePanel = new JPanel();
-        genePanel.setLayout(new FlowLayout());
+        initComponents();
+    }
+
+    private void initComponents() {
+        // Análisis genómico
         dnaInputField = new JTextField(20);
         countGenesButton = new JButton("Contar Genes");
-        geneCountResult = new JLabel("Resultado: ");
-        instructionsGenes = new JTextArea("Introduce una secuencia de ADN para contar los genes.\nUsa ATG como inicio y TAG, TAA, TGA como finales válidos.");
-        instructionsGenes.setEditable(false);
-        instructionsGenes.setOpaque(false);
-
-        genePanel.add(new JLabel("ADN:"));
-        genePanel.add(dnaInputField);
-        genePanel.add(countGenesButton);
-        genePanel.add(geneCountResult);
-        genePanel.add(instructionsGenes);
-
-        add(genePanel);
-
-        countGenesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String dna = dnaInputField.getText();
-                Conteo conteo = new Conteo();
-                int result = conteo.contarGenes(dna);
-                geneCountResult.setText("Resultado: " + result);
-            }
+        geneCountResult = new JLabel("Genes contados: ");
+        add(new JLabel("Secuencia de ADN:"));
+        add(dnaInputField);
+        add(countGenesButton);
+        add(geneCountResult);
+        countGenesButton.addActionListener(e -> {
+            Conteo conteo = new Conteo();
+            int result = conteo.contarGenes(dnaInputField.getText());
+            geneCountResult.setText("Genes contados: " + result);
         });
 
-        // Panel para cálculo de combinaciones
-        JPanel combinationsPanel = new JPanel();
-        combinationsPanel.setLayout(new FlowLayout());
-        numberInputField = new JTextField(10);
+        numberInputField = new JTextField(5);
         calculateCombinationsButton = new JButton("Calcular Combinaciones");
-        combinationsResult = new JLabel("Resultado: ");
-        instructionsCombinations = new JTextArea("Introduce un número para calcular combinaciones genéticas basadas en un modelo simplificado.");
-        instructionsCombinations.setEditable(false);
-        instructionsCombinations.setOpaque(false);
+        combinationsResult = new JLabel("Combinaciones: ");
+        add(new JLabel("Número para combinaciones:"));
+        add(numberInputField);
+        add(calculateCombinationsButton);
+        add(combinationsResult);
+        calculateCombinationsButton.addActionListener(e -> {
+            Combinaciones combinaciones = new Combinaciones();
+            int result = combinaciones.calcularCombinaciones(Integer.parseInt(numberInputField.getText()));
+            combinationsResult.setText("Combinaciones: " + result);
+        });
 
-        combinationsPanel.add(new JLabel("Número:"));
-        combinationsPanel.add(numberInputField);
-        combinationsPanel.add(calculateCombinationsButton);
-        combinationsPanel.add(combinationsResult);
-        combinationsPanel.add(instructionsCombinations);
+        // Herramientas de análisis numérico
+        sumInputField = new JTextField(10);
+        sumButton = new JButton("Sumatoria");
+        sumResult = new JLabel("Suma: ");
+        add(new JLabel("Número para sumatoria:"));
+        add(sumInputField);
+        add(sumButton);
+        add(sumResult);
+        sumButton.addActionListener(e -> {
+            SumatoriaNumeros sumatoria = new SumatoriaNumeros();
+            int result = sumatoria.sumatoria(Integer.parseInt(sumInputField.getText()));
+            sumResult.setText("Suma: " + result);
+        });
 
-        add(combinationsPanel);
+        rangeStartField = new JTextField(5);
+        rangeEndField = new JTextField(5);
+        listNumbersButton = new JButton("Listar Números");
+        listNumbersResult = new JTextArea(5, 20);
+        listNumbersResult.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(listNumbersResult);
+        add(new JLabel("Inicio rango:"));
+        add(rangeStartField);
+        add(new JLabel("Fin rango:"));
+        add(rangeEndField);
+        add(listNumbersButton);
+        add(scrollPane);
+        listNumbersButton.addActionListener(e -> {
+            ListadoNumeros listado = new ListadoNumeros();
+            java.util.List<Integer> numbers = listado.listarNumeros(Integer.parseInt(rangeStartField.getText()), Integer.parseInt(rangeEndField.getText()));
+            listNumbersResult.setText(numbers.toString());
+        });
 
-        calculateCombinationsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int n = Integer.parseInt(numberInputField.getText());
-                    Combinaciones combinaciones = new Combinaciones();
-                    int result = combinaciones.calcularCombinaciones(n);
-                    combinationsResult.setText("Resultado: " + result);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Por favor, introduce un número válido.");
-                }
+        baseInputField = new JTextField(5);
+        exponentInputField = new JTextField(5);
+        calculatePowerButton = new JButton("Calcular Potencia");
+        powerResult = new JLabel("Potencia: ");
+        add(new JLabel("Base:"));
+        add(baseInputField);
+        add(new JLabel("Exponente:"));
+        add(exponentInputField);
+        add(calculatePowerButton);
+        add(powerResult);
+        calculatePowerButton.addActionListener(e -> {
+            CalculoPotencias calculo = new CalculoPotencias();
+            int result = calculo.calcularPotencia(Integer.parseInt(baseInputField.getText()), Integer.parseInt(exponentInputField.getText()));
+            powerResult.setText("Potencia: " + result);
+        });
+
+        dataArrayField = new JTextField(20);
+        maxButton = new JButton("Encontrar Máximo");
+        maxResult = new JLabel("Máximo: ");
+        add(new JLabel("Datos (separados por coma):"));
+        add(dataArrayField);
+        add(maxButton);
+        add(maxResult);
+        maxButton.addActionListener(e -> {
+            String[] dataStr = dataArrayField.getText().split(",");
+            int[] data = new int[dataStr.length];
+            for (int i = 0; i < dataStr.length; i++) {
+                data[i] = Integer.parseInt(dataStr[i].trim());
             }
+            MaximoValor maximo = new MaximoValor();
+            int result = maximo.encontrarMaximo(data);
+            maxResult.setText("Máximo: " + result);
         });
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Aplicacion().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new Aplicacion().setVisible(true));
     }
 }
