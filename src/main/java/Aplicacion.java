@@ -30,15 +30,15 @@ public class Aplicacion extends JFrame {
         JPanel managementPanel = createManagementPanel();
         JPanel optimizationPanel = createOptimizationPanel();
 
-        ImageIcon genomicIcon = new ImageIcon("src/main/resources/adn.png");
-        ImageIcon numericIcon = new ImageIcon("src/main/resources/numeros.png");
-        ImageIcon managementIcon = new ImageIcon("src/main/resources/control.png");
-        ImageIcon optimizationIcon = new ImageIcon("src/main/resources/optimizacion.png");
+        ImageIcon genomicIcon = new ImageIcon(new ImageIcon("src/main/resources/adn.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        ImageIcon numericIcon = new ImageIcon(new ImageIcon("src/main/resources/numeros.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        ImageIcon managementIcon = new ImageIcon(new ImageIcon("src/main/resources/control.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        ImageIcon optimizationIcon = new ImageIcon(new ImageIcon("src/main/resources/optimizacion.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 
-        tabbedPane.addTab("Análisis Genómico", genomicPanel);
-        tabbedPane.addTab("Análisis Numérico", numericPanel);
-        tabbedPane.addTab("Gestión de Información", managementPanel);
-        tabbedPane.addTab("Optimización de Procesos", optimizationPanel);
+        tabbedPane.addTab("Análisis Genómico", genomicIcon, genomicPanel);
+        tabbedPane.addTab("Análisis Numérico", numericIcon, numericPanel);
+        tabbedPane.addTab("Gestión de Información", managementIcon, managementPanel);
+        tabbedPane.addTab("Optimización de Procesos", optimizationIcon, optimizationPanel);
 
         add(tabbedPane);
     }
@@ -66,7 +66,7 @@ public class Aplicacion extends JFrame {
         panel.setBackground(new Color(229, 255, 204));
 
         JTextField dnaInputField = new JTextField(20);
-        JButton countGenesButton = new JButton("Contar Genes");
+        JButton countGenesButton = new JButton("Contar Genes (Debe comenzar con ATG y finalizar con TAG, TAA o TGA)");
         JLabel geneCountResult = new JLabel("Genes contados aparecerán aquí.");
         panel.add(new JLabel("Introduce una secuencia de ADN para contar genes:"));
         panel.add(dnaInputField);
